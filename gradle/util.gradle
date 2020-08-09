@@ -1,0 +1,14 @@
+/**
+ * Create new module folder with files from 'gradle/init' and all 'sourceSets'
+ */
+task prepareProjects {
+    group 'build setup'
+    doFirst {
+        allprojects.each { project ->
+            println "$project initialization ..."
+            project.findProperty('sourceSets')?.each { set ->
+                set.allSource.srcDirs.each { mkdir it }
+            }
+        }
+    }
+}

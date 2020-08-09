@@ -1,0 +1,20 @@
+plugins {
+    id 'idea'
+    id 'groovy-gradle-plugin'
+    id 'com.github.ben-manes.versions' version "$benManesPluginVersion"
+}
+apply from: "$rootDir/gradle/util.gradle"
+repositories { mavenLocal(); mavenCentral() }
+idea { module { downloadJavadoc = true; downloadSources = true } }
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'ru.iopump.qa.allure'
+            implementationClass = 'ru.iopump.qa.allure.AllureServerPlugin'
+        }
+    }
+}
+dependencies {
+    testImplementation("org.codehaus.groovy:groovy-all:$groovyVersion")
+    testImplementation("org.spockframework:spock-core:$spockVersion")
+}
