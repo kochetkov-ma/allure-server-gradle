@@ -1,8 +1,13 @@
 package ru.iopump.qa.allure
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.gradle.api.logging.Logger
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
@@ -13,69 +18,90 @@ import javax.inject.Inject
 @CompileStatic
 class AllureServerPluginExtension {
 
-    @Input
-    String allureServerUrl
+    final private Project p
+    final private Logger log
 
     @Input
-    String relativeResultDir
+    Property<String> allureServerUrl = p.objects.property(String)
+
+    @Input
+    Property<String> relativeResultDir = p.objects.property(String)
 
     @InputFiles
-    Collection<File> resultDirs
+    ListProperty<File> resultDirs = p.objects.listProperty(File)
 
     @Input
     Object requestToGeneration = GenerationBodyTemplate.GITLAB
 
-    final private Project project
+    @Input
+    Property<Boolean> gitLabCallbackEnable = p.objects.property(Boolean).value(false)
+
+    @Input
+    Property<String> gitLabToken = p.objects.property(String).value(System.getenv('SERVICE_USER_API_TOKEN'))
+
+    @Input
+    Property<String> gitLabApiUrl = p.objects.property(String).value(System.getenv('CI_API_V4_URL'))
+
+    @Input
+    Property<String> gitLabProjectId = p.objects.property(String).value(System.getenv('CI_PROJECT_ID'))
+
+    @Input
+    Property<String> gitLabMergeRequestId = p.objects.property(String).value(System.getenv('CI_MERGE_REQUEST_IID'))
+
 
     @Inject
-    AllureServerPluginExtension(Project project) {
-        this.project = project
-    }
-
-    URL checkAndGetAllureServerUrl() {
-        new URL(allureServerUrl)
-    }
-
-    String makeRequestToGeneration(String uuid) {
-        if (requestToGeneration instanceof Closure<String>) {
-            return (requestToGeneration as Closure<String>).call(uuid)
-        } else if (requestToGeneration instanceof GenerationBodyTemplate) {
-            return (requestToGeneration as GenerationBodyTemplate).requestToGeneration.call(uuid)
-        } else if (requestToGeneration instanceof String) {
-            GenerationBodyTemplate.valueOf(requestToGeneration.toUpperCase()).requestToGeneration.call(uuid)
-        } else {
-            throw new GradleException("requestToGeneration can be:\n" +
-                    "   - Closure<String> with incoming argument as 'uuid' String type\n" +
-                    "   - GenerationBodyTemplate enum\n" +
-                    "   - String representation of GenerationBodyTemplate [${GenerationBodyTemplate.values()}]\n" +
-                    "   - Or default value $GenerationBodyTemplate.GITLAB, if not specified\n" +
-                    "but your 'makeRequestToGeneration' has type '${requestToGeneration.getClass()}'")
-        }
-
+    AllureServerPluginExtension(Project p) {
+        this.p = p
+        this.log = p.logger
     }
 
     @Internal
-    Collection<File> calculateResultDirs() {
-        boolean noResultDirsDefine = (resultDirs ?: []).empty
+    Provider<URL> checkAndGetAllureServerUrl() {
+        allureServerUrl.map { new URL(it) }
+    }
 
-        if (noResultDirsDefine) {
-            project.logger.lifecycle "No result directory define by extension 'allureServer'"
-            findResultDirs()
-        } else {
-            project.logger.lifecycle "User defined result directories: $resultDirs"
-            resultDirs
+    @Internal
+    @CompileDynamic
+    Provider<String> makeRequestToGeneration(Provider<String> uuid) {
+        uuid.map {
+            if (requestToGeneration instanceof Closure<String>) {
+                return (requestToGeneration as Closure<String>).call(uuid.get())
+            } else if (requestToGeneration instanceof GenerationBodyTemplate) {
+                return (requestToGeneration as GenerationBodyTemplate).requestToGeneration.call(uuid.get())
+            } else if (requestToGeneration instanceof String) {
+                GenerationBodyTemplate.valueOf((requestToGeneration as String).toUpperCase()).requestToGeneration.call(uuid.get())
+            } else {
+                throw new GradleException("requestToGeneration can be:\n" +
+                        "   - Closure<String> with incoming argument as 'uuid' String type\n" +
+                        "   - GenerationBodyTemplate enum\n" +
+                        "   - String representation of GenerationBodyTemplate [${GenerationBodyTemplate.values()}]\n" +
+                        "   - Or default value $GenerationBodyTemplate.GITLAB, if not specified\n" +
+                        "but your 'makeRequestToGeneration' has type '${requestToGeneration.getClass()}'")
+            }
         }
     }
 
     @Internal
-    Collection<File> findResultDirs() {
-        (project.allprojects
-                .collect {
-                    def dir = it.file "$it.projectDir/$relativeResultDir"
-                    def isResultDir = dir.exists() && dir.isDirectory()
-                    project.logger.lifecycle "For '$it' results directory '$dir' is ${isResultDir ? 'exist' : 'not exist'}"
-                    return dir
-                } - (null as File) as Collection<File>)
-                .tap { project.logger.lifecycle "Found result directories '$it'" }
+    Provider<List<File>> calculateResultDirs() {
+        (resultDirs as Provider<List<File>>).map { list ->
+            if (list.isEmpty()) {
+                log.info "No result directory define by extension 'allureServer'"
+                return findResultDirs()
+            } else {
+                log.info "User defined result directories: $list"
+                return list
+            }
+        }
+    }
+
+    private List<File> findResultDirs() {
+        p.allprojects
+                .collect { it.file("$it.projectDir/${relativeResultDir.get()}") }
+                .findAll { file ->
+                    def exists = file.exists() && file.isDirectory()
+                    log.info "For results directory '$file' ${exists ? 'exists' : 'not exists'}"
+                    exists
+                }
+                .tap { log.info "Found result directories '$it'" }
     }
 }

@@ -1,17 +1,19 @@
 package ru.iopump.qa.allure.schema
 
+import groovy.transform.CompileStatic
 import groovy.transform.Internal
 
 @Internal
+@CompileStatic
 class GitLabTemplate {
 
     static Closure<String> requestToGeneration() {
-        def reportPostfix = System.env.PATH_POSTFIX
-        def pipelineId = System.env.CI_PIPELINE_ID ?: '0'
-        def pipelineUrl = System.env.CI_PIPELINE_URL ?: 'localhost'
-        def jobName = System.env.CI_JOB_NAME ?: 'manual'
-        def mr = System.env.CI_MERGE_REQUEST_IID
-        def branch = System.env.CI_COMMIT_REF_NAME ?: 'master'
+        def reportPostfix = System.getenv('PATH_POSTFIX')
+        def pipelineId = System.getenv('CI_PIPELINE_ID') ?: '0'
+        def pipelineUrl = System.getenv('CI_PIPELINE_URL') ?: 'localhost'
+        def jobName = System.getenv('CI_JOB_NAME') ?: 'manual'
+        def mr = System.getenv('CI_MERGE_REQUEST_IID')
+        def branch = System.getenv('CI_COMMIT_REF_NAME') ?: 'master'
         def path = (mr ? mr.trim() ?: branch : branch) + "/" + jobName + (reportPostfix ? "/$reportPostfix" : '')
 
         {
@@ -30,7 +32,7 @@ class GitLabTemplate {
   },
   "results": [ "$uuid" ],
   "deleteResults": true
-}"""
+}""" as String
         }
     }
 }

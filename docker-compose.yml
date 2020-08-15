@@ -1,7 +1,11 @@
 version: '3.7'
 services:
   allure-server:
-    container_name: allure-server
     image: kochetkovma/allure-server
     ports:
       - 8080:8080
+
+  wiremock:
+    image: rodolpheche/wiremock
+    ports:
+      - 8081:8080

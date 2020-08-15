@@ -15,7 +15,14 @@ class AllureServerPluginTest extends Specification {
         buildFile = testProjectDir.newFile('build.gradle')
         buildFile << """
             plugins { id 'ru.iopump.qa.allure' }
-            
+
+            allureGitLabCallback {
+                reportUrlString = 'test_override'
+                gitLabMergeRequestNotesEndpointPath { 
+                    "\${->apiUrl}/projects_override/\${->projectId}/merge_requests/\${->mrId}/notes" 
+                }
+            }
+
             allureServer {
                 relativeResultDir = 'allure-results'
                 allureServerUrl = 'http://localhost:8080'
@@ -24,7 +31,12 @@ class AllureServerPluginTest extends Specification {
 "executorInfo": { "name": "GitLab CI", "type": "GitLab CI", "buildName": "max-pipeline", "buildUrl": "localhost", "reportName": "max-job" } }, 
 "results": [ "\$uuid" ], "deleteResults": true }\"\"\"
                 }
-            }
+                gitLabCallbackEnable = false
+                gitLabApiUrl = 'http://localhost:8081'
+                gitLabMergeRequestId = '0'
+                gitLabProjectId = '0'
+                gitLabToken = '1q2w3e' 
+            }  
         """
     }
 
@@ -74,6 +86,23 @@ class AllureServerPluginTest extends Specification {
         def result = GradleRunner.create()
                 .withProjectDir(testProjectDir.root)
                 .withArguments('allureServerGenerate')
+                .withPluginClasspath()
+                .build()
+
+        then:
+        println "Task result:\n$result.output"
+        result.output.contains '[SUCCESS]'
+        result.task(':allureServerSend').outcome == TaskOutcome.SUCCESS
+    }
+
+    def 'allureGitLabCallback task should send report url to GitLab MR comments'() {
+        def resultDir = testProjectDir.newFolder('allure-results')
+        new File("$resultDir/result.txt").text = 'result text'
+
+        when:
+        def result = GradleRunner.create()
+                .withProjectDir(testProjectDir.root)
+                .withArguments('allureGitLabCallback')
                 .withPluginClasspath()
                 .build()
 

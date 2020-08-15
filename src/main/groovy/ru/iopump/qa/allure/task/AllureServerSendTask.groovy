@@ -10,59 +10,61 @@ import org.apache.http.impl.client.HttpClientBuilder
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 import static org.apache.http.entity.ContentType.MULTIPART_FORM_DATA
-import static ru.iopump.qa.allure.AllureServerPlugin.TASK_ARCHIVE_NAME
 import static ru.iopump.qa.allure.AllureServerPlugin.EXTENSION_NAME
+import static ru.iopump.qa.allure.AllureServerPlugin.TASK_ARCHIVE_NAME
 
 @CompileStatic
 class AllureServerSendTask extends DefaultTask {
     public static final String UPLOADED_RESULT_UUID = 'uploaded-result-uuid.txt'
 
     @Input
-    URL allureServerUrl
+    @Internal
+    Property<URL> allureServerUrl = project.objects.property(URL)
 
     @Input
-    File archiveResult
+    @Internal
+    RegularFileProperty archiveResult = project.objects.fileProperty()
 
     @OutputFile
-    RegularFileProperty resultUuidFile
+    RegularFileProperty resultUuidFile = project.objects.fileProperty()
 
     AllureServerSendTask() {
         this.description = 'Send zip archive to server'
         this.group = 'allure-server'
-        this.resultUuidFile = project.objects.fileProperty()
         this.resultUuidFile.set(new File("$project.buildDir/$UPLOADED_RESULT_UUID"))
     }
 
     @TaskAction
     makeArchive() {
-        if (!archiveResult.exists()) throw new GradleException("Allure result archive '$archiveResult' is not exist. Check task '$TASK_ARCHIVE_NAME' configuration")
-        if (!archiveResult.size()) throw new GradleException("Allure result archive '$archiveResult' is empty. Check extension '$EXTENSION_NAME' configuration or skip task on empty result")
+        def archiveResultFile = archiveResult.get().asFile
+        if (!archiveResultFile.exists()) throw new GradleException("Allure result archive '$archiveResultFile' is not exist. Check task '$TASK_ARCHIVE_NAME' configuration")
+        if (!archiveResultFile.size()) throw new GradleException("Allure result archive '$archiveResultFile' is empty. Check extension '$EXTENSION_NAME' configuration or skip task on empty result")
 
-        logger.lifecycle "Send results '$archiveResult' to server '$allureServerUrl'"
+        logger.lifecycle "Send results '$archiveResultFile' to server '${allureServerUrl.get()}'"
 
-        def resultUuid = send()['uuid']
+        def resultUuid = send(archiveResultFile)['uuid']
         resultUuidFile.get().asFile.text = resultUuid
 
         logger.lifecycle "Send results to server. Uuid: '$resultUuid' in file '${resultUuidFile.asFile.get()}' [SUCCESS]"
     }
 
-    @Internal
-    private Map<String, String> send() {
+    private Map<String, String> send(File archiveResultFile) {
         def httpClient = HttpClientBuilder.create().build()
 
         def entity = MultipartEntityBuilder
                 .create()
                 .setContentType(MULTIPART_FORM_DATA)
-                .addBinaryBody('allureResults', archiveResult, ContentType.create('application/zip'), archiveResult.name)
+                .addBinaryBody('allureResults', archiveResultFile, ContentType.create('application/zip'), archiveResultFile.name)
                 .build()
 
-        def httpPost = new HttpPost(new URIBuilder(allureServerUrl.toURI()).setPath('/api/result').build()).tap { it.setEntity(entity) }
+        def httpPost = new HttpPost(new URIBuilder(allureServerUrl.get().toURI()).setPath('/api/result').build()).tap { it.setEntity(entity) }
 
         return httpClient.execute(httpPost).withCloseable { response ->
             def res = new JsonSlurper().parse(response.entity.getContent()) as Map<String, String>
