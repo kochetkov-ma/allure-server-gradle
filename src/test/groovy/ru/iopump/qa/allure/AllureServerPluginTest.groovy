@@ -4,11 +4,24 @@ import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import org.testcontainers.containers.DockerComposeContainer
+import org.testcontainers.spock.Testcontainers
+import spock.lang.Shared
 import spock.lang.Specification
 
+import static org.testcontainers.containers.wait.strategy.Wait.forListeningPort
+
+@Testcontainers
 class AllureServerPluginTest extends Specification {
     @Rule
     TemporaryFolder testProjectDir = new TemporaryFolder()
+
+    @Shared
+    DockerComposeContainer environment =
+            new DockerComposeContainer(new File("docker-compose.yml"))
+                    .withExposedService("allure-server", 8080, forListeningPort())
+                    .withExposedService("wiremock", 8081, forListeningPort())
+
     File buildFile
 
     def setup() {
