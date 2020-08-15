@@ -13,24 +13,20 @@ import org.gradle.api.tasks.TaskAction
 
 class GitLabMRCallbackTask extends DefaultTask {
 
-    @Input
     @Internal
     final Property<String> gitLabToken = project.objects.property(String)
 
-    @Input
     @Internal
     final Property<String> gitLabApiUrl = project.objects.property(String)
 
-    @Input
     @Internal
     final Property<String> gitLabProjectId = project.objects.property(String)
 
-    @Input
     @Internal
     final Property<String> gitLabMergeRequestId = project.objects.property(String)
 
     @Input
-    Property<String> reportUrlString = project.objects.property(String)
+    final Property<String> reportUrlString = project.objects.property(String)
 
     @Input
     @Optional

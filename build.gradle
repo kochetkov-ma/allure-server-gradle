@@ -23,3 +23,15 @@ dependencies {
     testImplementation "org.spockframework:spock-core:$spockVersion"
     testImplementation "org.testcontainers:spock:$testcontainersVersion"
 }
+pluginBundle {
+    website = 'http://allure.iopump.ru/'
+    vcsUrl = 'https://github.com/kochetkov-ma/allure-server-gradle'
+    description = 'Allure server (allure-server iopump) integration gradle plugin'
+    tags = ['allure-server', 'iopump', 'iopump.ru', 'kochetkov-ma']
+
+    plugins {
+        greetingsPlugin {
+            displayName = 'Allure server (allure-server iopump) integration gradle plugin'
+        }
+    }
+}

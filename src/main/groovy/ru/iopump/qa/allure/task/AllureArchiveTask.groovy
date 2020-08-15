@@ -1,12 +1,11 @@
 package ru.iopump.qa.allure.task
 
-import groovy.transform.CompileStatic
+
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.bundling.Zip
 
 class AllureArchiveTask extends Zip {
     public static final String ALLURE_RESULT_ZIP = "allure-results.zip"
-
 
     AllureArchiveTask() {
         this.description = 'Collect results and make zip archive'
@@ -14,6 +13,7 @@ class AllureArchiveTask extends Zip {
         this.archiveFileName.set(ALLURE_RESULT_ZIP)
         this.destinationDirectory.set(project.file(project.rootProject.buildDir))
     }
+
     @TaskAction
     makeArchive() {
         copy()

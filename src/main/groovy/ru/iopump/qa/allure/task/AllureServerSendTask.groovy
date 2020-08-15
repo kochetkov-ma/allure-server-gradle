@@ -11,7 +11,6 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
@@ -24,16 +23,14 @@ import static ru.iopump.qa.allure.AllureServerPlugin.TASK_ARCHIVE_NAME
 class AllureServerSendTask extends DefaultTask {
     public static final String UPLOADED_RESULT_UUID = 'uploaded-result-uuid.txt'
 
-    @Input
     @Internal
-    Property<URL> allureServerUrl = project.objects.property(URL)
+    final Property<URL> allureServerUrl = project.objects.property(URL)
 
-    @Input
     @Internal
-    RegularFileProperty archiveResult = project.objects.fileProperty()
+    final RegularFileProperty archiveResult = project.objects.fileProperty()
 
     @OutputFile
-    RegularFileProperty resultUuidFile = project.objects.fileProperty()
+    final RegularFileProperty resultUuidFile = project.objects.fileProperty()
 
     AllureServerSendTask() {
         this.description = 'Send zip archive to server'
