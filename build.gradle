@@ -9,7 +9,9 @@ repositories { mavenLocal(); mavenCentral() }
 idea { module { downloadJavadoc = true; downloadSources = true } }
 gradlePlugin {
     plugins {
-        simplePlugin {
+        allureServerPlugin {
+            displayName = 'Allure server (allure-server iopump) integration gradle plugin'
+            description = 'Add tasks and extension for aggregate allure results to zip archive / send to your allure server / generate report / get report url and send to your CI. See docs / examples: https://github.com/kochetkov-ma/allure-server-gradle'
             id = 'ru.iopump.qa.allure'
             implementationClass = 'ru.iopump.qa.allure.AllureServerPlugin'
         }
@@ -28,10 +30,4 @@ pluginBundle {
     vcsUrl = 'https://github.com/kochetkov-ma/allure-server-gradle'
     description = 'Allure server (allure-server iopump) integration gradle plugin'
     tags = ['allure-server', 'iopump', 'iopump.ru', 'kochetkov-ma']
-
-    plugins {
-        greetingsPlugin {
-            displayName = 'Allure server (allure-server iopump) integration gradle plugin'
-        }
-    }
 }

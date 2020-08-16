@@ -1,0 +1,26 @@
+name: Build plugin and execute functional tests
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print information
+        run: echo Current build = ${{ github.head_ref }}
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+          java-package: jdk
+          architecture: x64
+      - name: Build / Test
+        uses: eskatos/gradle-command-action@v1
+        with:
+          gradle-version: current
+          arguments: '--info --stacktrace check'

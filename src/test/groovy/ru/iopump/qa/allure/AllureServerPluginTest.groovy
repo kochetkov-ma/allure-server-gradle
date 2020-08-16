@@ -20,7 +20,6 @@ class AllureServerPluginTest extends Specification {
     DockerComposeContainer environment =
             new DockerComposeContainer(new File("docker-compose.yml"))
                     .withExposedService("allure-server", 8080, forListeningPort())
-                    .withExposedService("wiremock", 8081, forListeningPort())
 
     File buildFile
 
