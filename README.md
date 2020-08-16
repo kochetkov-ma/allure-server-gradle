@@ -158,5 +158,5 @@ allureGitLabCallback {
 ## Links
  - Examples from manual testing: [sample-multi-module](sample-multi-module/)
  - Allure-Server: [allure-server](https://github.com/kochetkov-ma/allure-server)
- - **Kotlin** Allure Extended Listener: [allure-server](https://github.com/kochetkov-ma/allure-server)
+ - **Kotlin** **Kotest** Allure Extended Listener: [kotest-allure](https://github.com/kochetkov-ma/kotest-allure)
  
