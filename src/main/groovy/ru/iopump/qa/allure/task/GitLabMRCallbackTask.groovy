@@ -1,28 +1,26 @@
 package ru.iopump.qa.allure.task
 
-
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.client.utils.URIBuilder
 import org.apache.http.impl.client.HttpClientBuilder
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
 class GitLabMRCallbackTask extends DefaultTask {
 
-    @Internal
+    @Input
     final Property<String> gitLabToken = project.objects.property(String)
 
-    @Internal
+    @Input
     final Property<String> gitLabApiUrl = project.objects.property(String)
 
-    @Internal
+    @Input
     final Property<String> gitLabProjectId = project.objects.property(String)
 
-    @Internal
+    @Input
     final Property<String> gitLabMergeRequestId = project.objects.property(String)
 
     @Input
@@ -30,7 +28,7 @@ class GitLabMRCallbackTask extends DefaultTask {
 
     @Input
     @Optional
-    Closure<String> gitLabMergeRequestNotesEndpointPath = { "$apiUrl/projects/$projectId/merge_requests/$mrId/notes" }
+    Closure<String> gitLabMergeRequestNotesEndpointPath = { "${-> apiUrl}/projects/${-> projectId}/merge_requests/${-> mrId}/notes" }
 
     GitLabMRCallbackTask() {
         this.description = 'Post generated report URL to GitLab MR comments'

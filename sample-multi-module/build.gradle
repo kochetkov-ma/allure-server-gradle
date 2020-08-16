@@ -1,35 +1,8 @@
-# allure-server-gradle
-
-![Build plugin and execute functional tests](https://github.com/kochetkov-ma/allure-server-gradle/workflows/Build%20plugin%20and%20execute%20functional%20tests/badge.svg?branch=master)  
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/kochetkov-ma/allure-server-gradle)
-
-Aggregate allure results - pack to zip archive - send to the [allure-server](https://github.com/kochetkov-ma/allure-server) - generate report - add report URL to the (now GitLab Only) CI
-
-## Quick start
-
-Minimal configuration
-```
 plugins {
-    id 'ru.iopump.qa.allure'
+    id 'ru.iopump.qa.allure' version '0.1.1' // Apply plugin
 }
-allureServer {
-    relativeResultDir = 'allure-results'
-    allureServerUrl = 'http://localhost:8080'
-}
-```
-Deploy [allure server](https://github.com/kochetkov-ma/allure-server) on your local environment (for e.g. as container)
-  
-Execute your tests
-  
-Run task `allureServerGenerate` - it will start `allureArchive` and `allureServerSend` tasks
 
-Results from directory `your_project/allure-results` or `your_project/module[N]/allure-results` will be packed to `zip` -> sent to the server `http://localhost:8080` -> report will be generated -> url will be saved to `build/generated-report-url.txt`
-
-Task `allureGitLabCallback` may help you to post Report Url in Git Server (or CI) but now only `GitLab` supported.
-
-## All settings
-
-```
+// Use extension 'allureServer' to specify all settings.
 allureServer {
     /**
      * 'allureArchive' task will try to find this directory in each module + root project.
@@ -39,14 +12,13 @@ allureServer {
      * - root/allure-results
      */
     relativeResultDir = 'allure-results'
-    
     /**
      * 'allureArchive' You may override 'relativeResultDir' setting and specify each results directory as file collection
      *
      *  OPTIONAL
      *  This settings or 'relativeResultDir' will be use. I recommend to use 'relativeResultDir'.
      */
-    resultDirs = [ file("$buildDir/allure-result"), file("$rootDir/module1/allure-result-any") ]
+    // resultDirs = [ file("$buildDir/allure-result"), file("$rootDir/module1/allure-result-any") ]
 
     /**
      * tasks 'allureServerSend' and 'allureServerGenerate'
@@ -131,9 +103,9 @@ allureServer {
 }
 
 /**
- * GitLab API may be changed in future. And you have a possibility to specify 'allureGitLabCallback' the task.
- * It's advanced usage.
- * I recommend to create an issue in 'https://github.com/kochetkov-ma/allure-server-gradle' about GitLab API changes.
+ * GitLab API may be changed in future. And you have possibility to specify 'allureGitLabCallback' task.
+ * It's advance usage.
+ * I recommend to create issue in 'https://github.com/kochetkov-ma/allure-server-gradle' about GitLab API changes.
  */
 allureGitLabCallback {
     /**
@@ -154,9 +126,5 @@ allureGitLabCallback {
         "${->apiUrl}/projects_override/${->projectId}/merge_requests/${->mrId}/notes"
     }
 }
-```
-## Links
- - Examples from manual testing: [sample-multi-module](sample-multi-module/)
- - Allure-Server: [allure-server](https://github.com/kochetkov-ma/allure-server)
- - **Kotlin** Allure Extended Listener: [allure-server](https://github.com/kochetkov-ma/allure-server)
- 
+
+wrapper { distributionType = Wrapper.DistributionType.ALL; gradleVersion = gradleWrapperVersion }
