@@ -1,0 +1,148 @@
+{
+  "name": "Start kotest specification Scenario 1 [1]",
+  "status": "passed",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false
+  },
+  "stage": "finished",
+  "description": "",
+  "steps": [
+    {
+      "name": "Start step 1 - --1--",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "description": "",
+      "steps": [
+        {
+          "name": "Allure aspectj step annotation on method 'step1'",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1595874906491,
+          "stop": 1595874906491
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1595874906487,
+      "stop": 1595874906493
+    },
+    {
+      "name": "Nested step has been printed  - --1--",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "description": "",
+      "steps": [
+        {
+          "name": "Allure aspectj nested step annotation on method 'stepNested'",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1595874906503,
+          "stop": 1595874906503
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1595874906501,
+      "stop": 1595874906504
+    },
+    {
+      "name": "Step 2 has been printed too  - --1--",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "description": "",
+      "steps": [
+        {
+          "name": "Allure aspectj step annotation on method 'step2'",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [
+            {
+              "name": "Allure aspectj nested step annotation on method 'stepNested'",
+              "status": "passed",
+              "stage": "finished",
+              "steps": [],
+              "attachments": [],
+              "parameters": [],
+              "start": 1595874906519,
+              "stop": 1595874906519
+            }
+          ],
+          "attachments": [],
+          "parameters": [],
+          "start": 1595874906518,
+          "stop": 1595874906519
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1595874906516,
+      "stop": 1595874906519
+    }
+  ],
+  "attachments": [],
+  "parameters": [],
+  "start": 1595874906477,
+  "stop": 1595874906553,
+  "uuid": "045bd66f-b5b1-4ecd-8e08-5f4bf235f681",
+  "historyId": "Start kotest specification Scenario 1 [1]",
+  "testCaseId": "ruiopumpkotestExampleFreeSpec Start kotest specification Scenario 1 1",
+  "fullName": "ru.iopump.kotest.ExampleFreeSpec Start kotest specification Scenario 1 [1]",
+  "labels": [
+    {
+      "name": "suite",
+      "value": "ru.iopump.kotest.ExampleFreeSpec"
+    },
+    {
+      "name": "thread",
+      "value": "9380@DESKTOP-M1LKJ4G.SpecRunner-7 @coroutine#11(44)"
+    },
+    {
+      "name": "host",
+      "value": "DESKTOP-M1LKJ4G"
+    },
+    {
+      "name": "language",
+      "value": "kotlin"
+    },
+    {
+      "name": "framework",
+      "value": "kotest"
+    },
+    {
+      "name": "package",
+      "value": "ru.iopump.kotest"
+    },
+    {
+      "name": "epic",
+      "value": "Allure feature annotation on test class"
+    },
+    {
+      "name": "feature",
+      "value": "FreeSpec"
+    }
+  ],
+  "links": []
+}

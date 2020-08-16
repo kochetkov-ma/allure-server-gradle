@@ -1,0 +1,159 @@
+{
+  "name": "Container test",
+  "status": "passed",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false
+  },
+  "stage": "finished",
+  "description": "",
+  "steps": [
+    {
+      "name": "Given the system prepared",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "description": "",
+      "steps": [
+        {
+          "name": "Deploy stand http://allure.iopump.ru",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [
+            {
+              "name": "name",
+              "value": "http://allure.iopump.ru"
+            }
+          ],
+          "start": 1596521804094,
+          "stop": 1596521804095
+        },
+        {
+          "name": "Configure stand http://allure.iopump.ru",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [
+            {
+              "name": "name",
+              "value": "http://allure.iopump.ru"
+            }
+          ],
+          "start": 1596521804096,
+          "stop": 1596521804096
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1596521804077,
+      "stop": 1596521804119
+    },
+    {
+      "name": "When send the request",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "description": "",
+      "steps": [
+        {
+          "name": "Send request to http://allure.iopump.ru",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [
+            {
+              "name": "url",
+              "value": "http://allure.iopump.ru"
+            }
+          ],
+          "start": 1596521804142,
+          "stop": 1596521804142
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1596521804140,
+      "stop": 1596521804155
+    },
+    {
+      "name": "Then positive response",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "description": "",
+      "steps": [
+        {
+          "name": "Have response with message http://allure.iopump.ru",
+          "status": "passed",
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [
+            {
+              "name": "message",
+              "value": "http://allure.iopump.ru"
+            }
+          ],
+          "start": 1596521804178,
+          "stop": 1596521804178
+        }
+      ],
+      "attachments": [],
+      "parameters": [],
+      "start": 1596521804176,
+      "stop": 1596521804195
+    }
+  ],
+  "attachments": [],
+  "parameters": [],
+  "start": 1596521803994,
+  "stop": 1596521804211,
+  "uuid": "c297cbe4-407c-4ddc-9909-42efd22f2acc",
+  "historyId": "Container test",
+  "testCaseId": "ruiopumpkotestReportingFreeSpec Container test",
+  "fullName": "ru.iopump.kotest.ReportingFreeSpec Container test",
+  "labels": [
+    {
+      "name": "suite",
+      "value": "ru.iopump.kotest.ReportingFreeSpec"
+    },
+    {
+      "name": "thread",
+      "value": "2552@DESKTOP-M1LKJ4G.SpecRunner-1 @coroutine#4(38)"
+    },
+    {
+      "name": "host",
+      "value": "DESKTOP-M1LKJ4G"
+    },
+    {
+      "name": "language",
+      "value": "kotlin"
+    },
+    {
+      "name": "framework",
+      "value": "kotest"
+    },
+    {
+      "name": "package",
+      "value": "ru.iopump.kotest"
+    }
+  ],
+  "links": []
+}

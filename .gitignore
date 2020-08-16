@@ -32,4 +32,3 @@ gradlew
 gradlew.bat
 
 .allure/
-**/allure-results/
