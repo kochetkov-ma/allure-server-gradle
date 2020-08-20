@@ -1,7 +1,10 @@
 # allure-server-gradle
 
-![Build plugin and execute functional tests](https://github.com/kochetkov-ma/allure-server-gradle/workflows/Build%20plugin%20and%20execute%20functional%20tests/badge.svg?branch=master)  
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/kochetkov-ma/allure-server-gradle)
+[![Plugin Portal](https://img.shields.io/maven-metadata/v?label=Gradle%20Plugin%20Portal&color=blue&metadataUrl=https://plugins.gradle.org/m2/ru/iopump/qa/allure/ru.iopump.qa.allure.gradle.plugin/maven-metadata.xml)](https://plugins.gradle.org/plugin/ru.iopump.qa.allure)
+  
+![Build plugin and execute functional tests](https://github.com/kochetkov-ma/allure-server-gradle/workflows/Build%20plugin%20and%20execute%20functional%20tests/badge.svg?branch=master)
+  
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/kochetkov-ma/allure-server-gradle)  
 
 Aggregate allure results - pack to zip archive - send to the [allure-server](https://github.com/kochetkov-ma/allure-server) - generate report - add report URL to the (now GitLab Only) CI
 
